@@ -15,7 +15,7 @@ export default function Demo() {
         }}
       >
         <div style={{ width: '100%', height: 'calc(50% - 10px)' }}>
-          <DefaultCard></DefaultCard>
+          <DefaultCard title="test"></DefaultCard>
         </div>
         <div
           style={{
@@ -24,7 +24,7 @@ export default function Demo() {
             marginTop: '10px',
           }}
         >
-          <DefaultCard></DefaultCard>
+          <DefaultCard title="test"></DefaultCard>
         </div>
       </div>
       <div
@@ -46,7 +46,7 @@ export default function Demo() {
         }}
       >
         <div style={{ width: '100%', height: 'calc(50% - 10px)' }}>
-          <DefaultCard></DefaultCard>
+          <DefaultCard title="test"></DefaultCard>
         </div>
         <div
           style={{
@@ -55,7 +55,7 @@ export default function Demo() {
             marginTop: '10px',
           }}
         >
-          <DefaultCard></DefaultCard>
+          <DefaultCard title="test"></DefaultCard>
         </div>
       </div>
       <div

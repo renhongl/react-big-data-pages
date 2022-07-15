@@ -4,9 +4,6 @@ import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
-import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
-
 export default function App() {
   let camera, scene, renderer;
 
@@ -15,13 +12,28 @@ export default function App() {
     render();
   }, []);
 
+  const loadGltf = (fullPath) => {
+    return new Promise((resolve) => {
+      console.log(fullPath);
+      const loader = new GLTFLoader();
+      loader.load(
+        fullPath,
+        (gltf) => {
+          console.log('resolve');
+          resolve(gltf);
+        },
+        () => {},
+        () => {}
+      );
+    });
+  };
+
   function init() {
-    const container = document.createElement('div');
-    document.body.appendChild(container);
+    const container = document.getElementById('model');
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1;
     renderer.outputEncoding = THREE.sRGBEncoding;
@@ -29,7 +41,7 @@ export default function App() {
 
     camera = new THREE.PerspectiveCamera(
       45,
-      window.innerWidth / window.innerHeight,
+      container.clientWidth / container.clientHeight,
       1,
       2000
     );
@@ -48,21 +60,14 @@ export default function App() {
     grid.material.transparent = true;
     scene.add(grid);
 
-    const ktx2Loader = new KTX2Loader()
-      .setTranscoderPath('js/libs/basis/')
-      .detectSupport(renderer);
-
-    const loader = new GLTFLoader().setPath(
-      'https://threejs.org/examples/models/gltf/'
-    );
-    loader.setKTX2Loader(ktx2Loader);
-    loader.setMeshoptDecoder(MeshoptDecoder);
-    loader.load('coffeemat.glb', function (gltf) {
+    loadGltf('model/coffeemat.glb').then(function (gltf) {
+      console.log('111');
       // coffeemat.glb was produced from the source scene using gltfpack:
       // gltfpack -i coffeemat/scene.gltf -o coffeemat.glb -cc -tc
       // The resulting model uses EXT_meshopt_compression (for geometry) and KHR_texture_basisu (for texture compression using ETC1S/BasisLZ)
-
+      alert(1);
       gltf.scene.position.y = 8;
+      glft.scene.scale.set(100, 100, 100);
 
       scene.add(gltf.scene);
 
@@ -80,10 +85,10 @@ export default function App() {
   }
 
   function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.aspect = container.clientWidth / container.clientHeight;
     camera.updateProjectionMatrix();
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(container.clientWidth, container.clientHeight);
 
     render();
   }
@@ -94,5 +99,5 @@ export default function App() {
     renderer.render(scene, camera);
   }
 
-  return <div>test</div>;
+  return <div id="model" style={{ width: '100%', height: '100%' }}></div>;
 }
