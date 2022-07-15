@@ -1,6 +1,8 @@
 import React from 'react';
 import DefaultLayout from '../components/layout/Default';
 import DefaultCard from '../components/card/Default';
+import GltfModel from '../components/model/gltf';
+
 export default function Demo() {
   return (
     <DefaultLayout>
@@ -32,7 +34,9 @@ export default function Demo() {
           padding: '0 10px',
         }}
       >
-        <DefaultCard></DefaultCard>
+        <DefaultCard>
+          <GltfModel></GltfModel>
+        </DefaultCard>
       </div>
       <div
         style={{
